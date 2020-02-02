@@ -8,13 +8,15 @@ services:
       - "4567-4599:4567-4599"
       - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
     environment:
-      - SERVICES=lambda,apigateway
+      - SERVICES=iam,lambda,apigateway,es,s3,cloudformation,sns,sqs,kinesis,dynamodb,firehose,ses,route53,redshift,dynamodb,cloudwatch,sts
       - DEBUG=true
       - DATA_DIR=/tmp/localstack/data
       - PORT_WEB_UI=8080
-      - LAMBDA_EXECUTOR=local
+      - LAMBDA_EXECUTOR=docker
+      - LAMBDA_REMOTE_DOCKER=1
       - KINESIS_ERROR_PROBABILITY=0.0
       - DOCKER_HOST=unix:///var/run/docker.sock
+      - LOCALSTACK_API_KEY=.....
     volumes:
       - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"

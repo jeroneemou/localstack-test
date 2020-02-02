@@ -1,0 +1,38 @@
+service: lambda-test
+
+plugins:
+  - serverless-localstack
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 512 # optional, in MB, default is 1024
+  timeout: 10 # optional, in seconds, default is 6
+  versionFunctions: false # optional, default is true
+  stage: ${opt:stage, self:custom.defaultStage}
+  deploymentBucket:
+    name: lambda-test-bucket
+
+functions:
+  lambda-test:
+    handler: handler.handler # required, handler set in AWS Lambda
+    name: lambda-test # optional, Deployed Lambda name
+    description: Description of what the lambda function does # optional, Description to publish to AWS
+
+custom:
+  defaultStage: local
+  localstack:
+    stages:
+      - local
+    host: http://localhost  # optional - LocalStack host to connect to
+    autostart: true  # optional - start LocalStack in Docker on Serverless deploy
+    endpointFile: localstack_endpoints.json
+    lambda:
+      # Enable this flag to improve performance
+      mountCode: True
+    docker:
+      # Enable this flag to run "docker ..." commands as sudo
+      sudo: False
+
+stages:
+  local:
